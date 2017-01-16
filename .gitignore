@@ -2,3 +2,7 @@
 /obj
 /bin
 /packages
+/ClipboardSqlFormatter/obj
+/ClipboardSqlFormatter/bin
+/Tests/obj
+/Tests/bin

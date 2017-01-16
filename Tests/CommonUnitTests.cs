@@ -1,0 +1,33 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace ClipboardSqlFormatter.Tests
+{
+    [TestClass]
+    public class CommonUnitTests
+    {
+        [TestMethod]
+        public void CommonTest1()
+        {
+            string inputSql = "  exec sp_executesql N' SELECT \"LDRightObject\".\"RightID\", \"LDRightObject\".\"FilterID\", \"LDRightObject\".\"MemberID\", \"LDRightObject\".\"ObjectID\" AS \"ID\" FROM LDRightObject \"LDRightObject\" WHERE  (  ( \"LDRightObject\".\"MemberID\" = @V0 OR \"LDRightObject\".\"MemberID\" = @V1 OR \"LDRightObject\".\"MemberID\" = @V2 OR \"LDRightObject\".\"MemberID\" = @V3 OR \"LDRightObject\".\"MemberID\" = @V4 )  AND \"LDRightObject\".\"ObjectID\" = @V5 AND \"LDRightObject\".\"RightID\" = @V6 ) ',N'@V0 bigint,@V1 bigint,@V2 bigint,@V3 bigint,@V4 bigint,@V5 bigint,@V6 bigint',@V0=1010,@V1=1011,@V2=356938,@V3=381781,@V4=1000,@V5=462022,@V6=513";
+            var formatter = new SqlFormatter();
+
+            string outputSql;
+            Assert.IsTrue(formatter.FormatSql(inputSql, out outputSql));
+            //Assert.AreEqual("select", outputSql);
+        } 
+        
+        [TestMethod]
+        public void CommonTest2()
+        {
+            string inputSql = "exec sp_executesql N' SELECT TOP 1000 \"obj\".\"Actual\", \"doc\".\"DescrDoc\" AS \"Annotation\", \"doc\".\"Composition\", \"obj\".\"CreateDateTime\", \"obj\".\"EditorID\" AS \"CUREDITOR\", \"obj\".\"EditorID\" AS \"CurrentEditorID\", (select case when (select stateid from lderc where id=doc.id)=6 then (SELECT TOP 1 o.ExecDateTime FROM LDOPERATION o WHERE o.OperTypeID = 2142 AND o.ObjectID = doc.ID ORDER BY o.ID DESC)else null end) AS \"DeleteDate\", (select case when (select stateid from lderc where id=doc.id)=6 then (SELECT TOP 1 v.Name FROM LDOPERATION o JOIN LDVocabulary v ON o.MemberID = v.ID  WHERE o.OperTypeID = 2142 AND o.ObjectID = doc.ID ORDER BY o.ID DESC) else '''' end) AS \"DeletedByUser\", \"abstDoc\".\"EntityName\", \"doc\".\"ID\", \"obj\".\"LastEditDateTime\" AS \"LastEditDate\", \"obj\".\"LastEditDateTime\", \"LASTEDITSESSION.USER.voc\".\"Name\" AS \"LastEditor\", \"abstDoc\".\"Name\", \"doc\".\"N\" AS \"Number\", \"obj\".\"ObjectTypeID\" AS \"ObjectType\", \"obj\".\"ObjID\", \"doc\".\"RegDate\" AS \"RegistrationDate\", \"doc\".\"DocN\" AS \"RegistrationNumber\", \"CHANGE.LDObjectChange\".\"LastChangedDate\" AS \"ServerLastUpdateTime\", \"doc\".\"SheafCount\", \"doc\".\"StateID\" AS \"State\", \"obj\".\"UID\", \"doc\".\"VersionCount\", \"obj\".\"VersionN\", \"doc\".\"Viewers\", charindex(@V0, \"doc\".\"Viewers\") AS \"ViewFlag\", \"doc\".\"N\" AS \"XNumber\", \"doc\".\"ID\" AS \"DatabaseID\", \"doc\".\"AccessID\", \"obj\".\"ObjectTypeID\" AS \"CardID\", \"doc\".\"JournalID\" AS \"ContainerID\", \"obj\".\"EditorID\" AS \"CurEditorID\", \"doc\".\"DeliveryTypeID\", \"doc\".\"StateDocumentID\" AS \"DocumentStateID\", \"doc\".\"DocumTypeID\", \"doc\".\"JournalID\" FROM LDERC \"doc\" INNER JOIN LDObject \"obj\" ON (\"doc\".\"ID\" = \"obj\".\"ID\") INNER JOIN VIEW30ABSTRACTDOC \"abstDoc\" ON (\"doc\".\"ID\" = \"abstDoc\".\"ID\") LEFT OUTER JOIN LDSession \"LASTEDITSESSION.sess\" ON (\"obj\".\"LastEditSessionID\" = \"LASTEDITSESSION.sess\".\"ID\") LEFT OUTER JOIN LDVocabulary \"LASTEDITSESSION.USER.voc\" ON (\"LASTEDITSESSION.sess\".\"UserID\" = \"LASTEDITSESSION.USER.voc\".\"ID\") LEFT OUTER JOIN LDObjectChange \"CHANGE.LDObjectChange\" ON (\"obj\".\"ID\" = \"CHANGE.LDObjectChange\".\"ObjectID\") LEFT OUTER JOIN LDJournal \"ContainerID.jrn\" ON (\"doc\".\"JournalID\" = \"ContainerID.jrn\".\"ID\") WHERE  (  (  (  (  (  ( \"doc\".\"StateID\" <> @V1 )  AND \"doc\".\"JournalID\" = @V2 )  AND  ( \"doc\".\"AccessID\" <= @V3 OR  (  ( \"doc\".\"AccessID\" = 999 OR  ( \"doc\".\"AccessID\" = 1000 AND  ( @V4 = @V5 OR \"doc\".\"ID\" IN  (  SELECT \"LDMemberObject\".\"ObjectID\" AS \"ID\" FROM LDMemberObject \"LDMemberObject\" WHERE \"LDMemberObject\".\"MemberID\" = @V6 )  )  )  )  AND \"doc\".\"ID\" IN  (  SELECT \"LDMemberObject\".\"ObjectID\" AS \"ID\" FROM LDMemberObject \"LDMemberObject\" WHERE \"LDMemberObject\".\"MemberID\" IN  ( select /*10*/ * from dbo.LD30_Str2List (@L7) )  )  )  )  )  )  AND  ( \"doc\".\"StateID\" <> 6 OR \"doc\".\"JournalID\" IN  (  SELECT \"LDRightObject\".\"ObjectID\" AS \"ID\" FROM LDRightObject \"LDRightObject\" WHERE  (  ( \"LDRightObject\".\"RightID\" = 2145 AND \"LDRightObject\".\"MemberID\" IN  ( select /*10*/ * from dbo.LD30_Str2List (@L8) )  )  OR  ( \"LDRightObject\".\"RightID\" IN  (  SELECT \"LDRight\".\"ID\" FROM LDRight \"LDRight\" WHERE  ( \"LDRight\".\"ID\" = 2145 AND \"LDRight\".\"Enabled\" = ''-'' )  )  )  )  )  )  )  AND  ( \"doc\".\"StateID\" <> 5 AND \"ContainerID.jrn\".\"Name\" <> ''Скрытый журнал для проектов'' )  )  ORDER BY \"doc\".\"ID\" DESC',N'@V0 nvarchar(6),@V1 bigint,@V2 bigint,@V3 bigint,@V4 bigint,@V5 bigint,@V6 bigint,@L7 varchar(28),@L8 varchar(28)',@V0=N',1000,',@V1=6,@V2=462022,@V3=1,@V4=1000,@V5=1000,@V6=1000,@L7='1000,1010,1011,356938,381781',@L8='1000,1010,1011,356938,381781'";
+
+
+            var formatter = new SqlFormatter();
+
+            string outputSql;
+            Assert.IsTrue(formatter.FormatSql(inputSql, out outputSql));
+            //Assert.AreEqual("select", outputSql);
+        }
+    }
+}
