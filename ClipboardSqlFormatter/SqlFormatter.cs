@@ -90,7 +90,7 @@ namespace ClipboardSqlFormatter
             int firstSymbolIndex = 0;
 
             var spaces = new[] { ' ', '\t', '\n', '\r' };
-            while (spaces.Contains(text[firstSymbolIndex]))
+            while (firstSymbolIndex < text.Length && spaces.Contains(text[firstSymbolIndex]))
             {
                 firstSymbolIndex++;
             }
