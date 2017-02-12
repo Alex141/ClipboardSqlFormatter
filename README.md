@@ -40,8 +40,9 @@ WHERE (
 
 # Features
 
-* If you need to copy sql without any modifications, right click on application tray icon and uncheck item 'Is enabled'
-* Move mouse to application tray icon and you will see current state of application - is is enabled of disabled.
+* If you need to copy sql without any modifications, right click on application tray icon and uncheck item **'Is enabled'**
+* For exit from application right click on application tray icon and choose item **'Close'**
+* Move mouse to application tray icon and you will see current state of application - is is enabled or disabled.
 
 # Dependencies
 
