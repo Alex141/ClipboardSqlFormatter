@@ -20,7 +20,7 @@ exec sp_executesql N' SELECT "obj"."CreateDateTime", "obj"."LastEditDateTime" FR
 )  ) ',N'@V0 bigint',@V0=6815463'
 ```
 
-pasted string is:
+pasted string will be:
 
 ```SQL
 SELECT "obj"."CreateDateTime"
