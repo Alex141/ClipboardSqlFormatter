@@ -67,7 +67,7 @@ namespace ClipboardSqlFormatter
 
         private void SetTrayHint()
         {
-            var hint = "ClipboardSqlFormatter " + (Settings.Default.IsEnabled ? "enabled" : "disabled");
+            var hint = "ClipboardSqlFormatter " + (Settings.Default.IsEnabled ? "is enabled" : "is disabled");
 
             notifyIcon.Text = hint;
         }
