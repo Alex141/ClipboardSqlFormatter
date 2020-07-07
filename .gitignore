@@ -6,3 +6,5 @@
 /ClipboardSqlFormatter/bin
 /Tests/obj
 /Tests/bin
+/.vs
+*.DotSettings.user

@@ -87,20 +87,13 @@ namespace ClipboardSqlFormatter
         private bool CheckTextStartsWithExecCommand(string text)
         {
             const string execSqlString = "exec sp_executesql";
-            int firstSymbolIndex = 0;
-
-            var spaces = new[] { ' ', '\t', '\n', '\r' };
-            while (firstSymbolIndex < text.Length && spaces.Contains(text[firstSymbolIndex]))
-            {
-                firstSymbolIndex++;
-            }
-
-            return text.Length > execSqlString.Length + firstSymbolIndex && text.Substring(firstSymbolIndex, execSqlString.Length) == execSqlString;
+            return text.Trim().StartsWith(execSqlString, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private string SubstituteParameters(string sqlQuery, Dictionary<string, string> parameters)
         {
-            foreach (var parameter in parameters)
+            var reverseParameters = parameters.Reverse();
+            foreach (var parameter in reverseParameters)
             {
                 sqlQuery = sqlQuery.Replace(parameter.Key, parameter.Value);
             }
