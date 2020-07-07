@@ -197,6 +197,52 @@ WHERE (
             string outputSql;
             Assert.IsTrue(formatter.FormatSql(inputSql, out outputSql));
             Assert.AreEqual(expectedOutputSql, outputSql);
-        } 
+        }
+
+        [TestMethod]
+        public void CanHandleMoreThan10Parameters()
+        {
+            string inputSql = @"EXEC sp_executesql N'select @p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15'
+	            ,N'@p0 int,@p1 int,@p2 int,@p3 nvarchar(255),@p4 bit,@p5 varchar(8000),@p6 nvarchar(255),@p7 datetime2(7),@p8 datetime2(7),@p9 nvarchar(255),@p10 nvarchar(255),@p11 nvarchar(255),@p12 nvarchar(255),@p13 nvarchar(255),@p14 datetime2(7),@p15 datetime2(7)'
+	            ,@p0 = 1
+	            ,@p1 = 1
+	            ,@p2 = 1
+	            ,@p3 = N'number 3'
+	            ,@p4 = 1
+	            ,@p5 = 'number 5'
+	            ,@p6 = N'number 6'
+	            ,@p7 = '2020-01-01 00:00:00'
+	            ,@p8 = '2020-07-01 12:56:22'
+	            ,@p9 = N'number 9'
+	            ,@p10 = N'number 10'
+	            ,@p11 = N'number 11'
+	            ,@p12 = N'number 12'
+	            ,@p13 = N'number 13'
+	            ,@p14 = '2020-01-01 00:00:00'
+	            ,@p15 = '2020-07-01 12:56:22'";
+
+            string expectedOutputSql = @"SELECT 1
+	,1
+	,1
+	,N'number 3'
+	,1
+	,'number 5'
+	,N'number 6'
+	,'2020-01-01 00:00:00'
+	,'2020-07-01 12:56:22'
+	,N'number 9'
+	,N'number 10'
+	,N'number 11'
+	,N'number 12'
+	,N'number 13'
+	,'2020-01-01 00:00:00'
+	,'2020-07-01 12:56:22'
+";
+
+            var formatter = new SqlFormatter();
+
+            Assert.IsTrue(formatter.FormatSql(inputSql, out var outputSql));
+            Assert.AreEqual(expectedOutputSql, outputSql);
+        }
     }
 }
